@@ -107,7 +107,7 @@ end
 
 
 figure
-plot(thetas, pw, thetas, Power)
+plot(thetas, pw, 'o', thetas, Power)
 grid on
 legend('Observed', 'Theory')
 
