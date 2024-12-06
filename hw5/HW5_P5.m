@@ -44,8 +44,8 @@ rms_v1 = rms(xhats_save{i_best}(2, (end - 40):end) - xhats_save{1}(2, (end - 40)
 rms_x2 = rms(xhats_save{i_best}(1, (end - 40):end) - xhats_save{3}(1, (end - 40):end));
 rms_v2 = rms(xhats_save{i_best}(2, (end - 40):end) - xhats_save{3}(2, (end - 40):end));
 
-sig_x = sqrt(phats_save{i_best}(1, end));
-sig_v = sqrt(phats_save{i_best}(4, end));
+sig_x = sqrt(phats_save{i_best}(1, :));
+sig_v = sqrt(phats_save{i_best}(4, :));
 
 %% plotting
 close all
@@ -61,28 +61,35 @@ xline(bup)
 plot(evbars, zeros(size(evbars)), '*')
 grid on
 
-% h2 = figure;
-% h2.WindowStyle = 'Docked';
-% 
-% subplot(2, 1, 1)
-% plot(ts, xhats(1, :), 'r*'); hold on
-% plot(ts, sqrt(phats(1, :)) .* [1; -1], 'bo')
-% grid on
-% legend('Estimate', '1\sigma', '')
-% title('Filter Output')
-% ylabel('xhat_1')
-% 
-% subplot(2, 1, 2)
-% plot(ts, xhats(2, :), 'r*'); hold on
-% plot(ts, sqrt(phats(4, :)) .* [1; -1], 'bo')
-% grid on
-% ylabel('xhat_2')
-% xlabel('Time (s)')
+h2 = figure;
+h2.WindowStyle = 'Docked';
+
+subplot(4, 1, 1)
+plot(ts, rms_x1./sig_x, 'r*'); hold on
+grid on
+title('RMS of Best Tuning to Others vs Covariance')
+ylabel('RMS_x_1 / \sigma_x')
+
+subplot(4, 1, 2)
+plot(ts, rms_x2./sig_x, 'r*'); hold on
+grid on
+ylabel('RMS_x_2 / \sigma_x')
+
+subplot(4, 1, 3)
+plot(ts, rms_v1./sig_v, 'r*'); hold on
+grid on
+ylabel('RMS_v_1 / \sigma_v')
+
+subplot(4, 1, 4)
+plot(ts, rms_v2./sig_v, 'r*'); hold on
+grid on
+ylabel('RMS_v_2 / \sigma_v')
+
+xlabel('Time (s)')
 
 fprintf('P5\n\tLower Threshold: %f \n\tUpper Threshold: %f \n', blo, bup)
 fprintf('\n\tBest Qk: %f \n', Qks(i_best))
-fprintf('\n\tRMS x1/sigma_x: %f \n\tRMS x2/sigma_x: %f \n\tRMS v1/sigma_v: %f \n\tRMS v2/sigma_v: %f \n', ...
-    rms_x1/sig_x, rms_x2/sig_x, rms_v1/sig_v, rms_v2/sig_v)
+
 
 
 
